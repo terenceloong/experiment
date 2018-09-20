@@ -5,7 +5,14 @@ earth_constant;
 kgps = find(info(:,2)>imu(1,1), 1) - 1;
 p = pos(kgps,2:4); %deg, [lat,lon,h]
 v = [0, 0, 0]; %m/s, [vn,ve,vd]
-att = [-115, 0, 0]; %deg, [yaw,pitch,roll]
+%//////////////////////////////////////////////////////
+acc = imu(1,5:7);
+mag = imu(1,8:10);
+theta = asin(acc(1)/norm(acc));
+gamma = atan2(-acc(2), -acc(3));
+psi = atan2(mag(3)*sin(gamma)-mag(2)*cos(gamma), mag(1)*cos(theta)+(mag(3)*cos(gamma)+mag(2)*sin(gamma))*sin(theta))/pi*180 - 10;
+%//////////////////////////////////////////////////////
+att = [psi, 0, 0]; %deg, [yaw,pitch,roll]
 pva0 = [p, v, att]; %record initial value
 
 %% 3.Initialize state vector
@@ -42,7 +49,7 @@ elseif N == 15
     Q = diag([[1,1,1]*(0.1/180*pi)*0.707 *1, [1,1,1]*0.01*0.707 *1,...
               [1/a,1/a,1]*0.01*0.707*dt/2 *1, 0.2*dt/2, 0.2, [1,1,1]*(0.005/180*pi), 0.002].^2) *dt^2;
 elseif N == 17
-    P = diag([[1,1,1]*(2/180*pi), [1,1,1]*1, [1/a,1/a,1]*5, 10,1, [1,1,1]*(0.1/180*pi), [1,1,1]*0.02].^2);
+    P = diag([[1,1,1]*(2/180*pi), [1,1,1]*1, [1/a,1/a,1]*5, 10,1, [1,1,2]*(0.1/180*pi), [2,2,1]*0.02].^2);
     Q = diag([[1,1,1]*(0.1/180*pi)*0.707 *1, [1,1,1]*0.01*0.707 *1,...
               [1/a,1/a,1]*0.01*0.707*dt/2 *1, 0.2*dt/2, 0.2, [1,1,1]*(0.005/180*pi)*5, [1,1,1]*0.002*5].^2) *dt^2;
 end
@@ -181,17 +188,17 @@ for k=1:n
     [r1,r2,r3] = quat2angle(avp(1:4)');
     nav(k,7:9) = [r1,r2,r3] /pi*180; %deg
     
-    if 9.6<=norm(acc2) && norm(acc2)<=10
-        theta = asin(acc2(1)/norm(acc2));
-        gamma = atan2(-acc2(2), -acc2(3));
-    else
+%     if 9.6<=norm(acc2) && norm(acc2)<=10
+%         theta = asin(acc2(1)/norm(acc2));
+%         gamma = atan2(-acc2(2), -acc2(3));
+%     else
         theta = r2;
         gamma = r3;
-    end
+%     end
     heading(k,2) = theta/pi*180;
     heading(k,3) = gamma/pi*180;
     mag = imu(kj,8:10);
-    heading(k,1) = atan2(mag(3)*sin(gamma)-mag(2)*cos(gamma), mag(1)*cos(theta)+(mag(3)*cos(gamma)+mag(2)*sin(gamma))*sin(theta))/pi*180;
+    heading(k,1) = atan2(mag(3)*sin(gamma)-mag(2)*cos(gamma), mag(1)*cos(theta)+(mag(3)*cos(gamma)+mag(2)*sin(gamma))*sin(theta))/pi*180 - 10;
 end
 nav = [pva0; nav];
 

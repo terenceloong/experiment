@@ -10,7 +10,7 @@ load('./calib/bias_gyro.mat');
 c_mag = [4.6; 3.0; -6.5];
 
 for k=1:size(imu0,1)
-    imu(k,2:4) = imu0(k,2:4) - bias_gyro;
+    imu(k,2:4) = imu0(k,2:4) - bias_gyro + [0.5*0,0.5*0,0.5*0];
 %     imu(k,5:7) = imu0(k,5:7) - bias_acc;
 %     imu(k,8:10) = (S_mag*(imu0(k,8:10)'-c_mag))';
     imu(k,8:10) = imu0(k,8:10)-c_mag';

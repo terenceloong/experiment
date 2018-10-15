@@ -17,10 +17,10 @@ disp(c');
 disp('lamda:');
 disp(lamda');
 
-length = zeros(n,1);
+vl = zeros(n,1);
 for k=1:n
     D0(k,:) = (S*(D0(k,:)'-c))';
-    length(k) = norm(D0(k,:));
+    vl(k) = norm(D0(k,:));
 end
 
 figure
@@ -35,7 +35,7 @@ quiver3(0,0,0, 0,1,0, 'Color','m', 'LineWidth',3)
 quiver3(0,0,0, 0,0,1, 'Color','r', 'LineWidth',3)
 
 figure
-plot(length)
+plot(vl)
 
 %% 2.Calibrate axis
 D1 = fun_parse_imu(['./',folder,'/D1.DAT']);

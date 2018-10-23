@@ -10,7 +10,7 @@ lat_u = lat_u/180;
 lon_u = lon_u/180;
 %---------------------------------------------------
 psi = 0.0137/(E+0.11) - 0.022;
-lat_i = lat_u + psi*cos(psi*pi);
+lat_i = lat_u + psi*cos(A*pi);
 if lat_i>0.416
     lat_i = 0.416;
 elseif lat_i<-0.416
@@ -28,11 +28,7 @@ if PER<72000
     PER = 72000;
 end
 t = 43200*lon_i + t; %local time
-if t>=86400
-    t = t-86400;
-elseif t<0
-    t = t+86400;
-end
+t = mod(t,86400);
 x = 2*pi*(t-50400)/PER;
 %---------------------------------------------------
 F = 1 + 16*(0.53-E)^3;

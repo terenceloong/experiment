@@ -2,19 +2,19 @@
 clear;clc;
 
 %% 1.Read file
+dt = 100; %ms
 
 % filename = './gps_data/ReceivedTofile-COM4-2018_9_1_17-01-39.DAT';
-% filename = './gps_data/ReceivedTofile-COM5-2018_9_8_20-13-17.DAT';
+filename = './gps_data/ReceivedTofile-COM5-2018_9_8_20-13-17.DAT';
 
 % filename = './gps_data/ReceivedTofile-COM4-2018_9_19_20-50-25.DAT';
 % filename = './gps_data/ReceivedTofile-COM4-2018_9_19_21-07-44.DAT';
-filename = './gps_data/ReceivedTofile-COM4-2018_9_19_21-22-52.DAT';
+% filename = './gps_data/ReceivedTofile-COM4-2018_9_19_21-22-52.DAT';
 
 fileID = fopen(filename, 'r');
 stream = fread(fileID, 'uint8=>uint8');
 fclose(fileID);
 disp(['Read file: ',filename]);
-dt = 100; %ms
 
 %% 2.Delete the incomplete packet in the end
 if stream(end)~=3

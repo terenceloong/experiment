@@ -69,3 +69,50 @@ end
 
 drange = range-range0;
 drange_rate = range_rate - range_rate0;
+
+%%
+t = (info(:,2)-info(1,2))/1000;
+figure
+hold on
+labels = {};
+for k=1:32
+    if ~isnan(max(drange(:,k)))
+        plot(t,drange(:,k), 'LineWidth',1.2)
+        labels = [labels, ['SV',num2str(k)]];
+    end
+end
+legend(labels)
+set(gca, 'xlim', [t(1),t(end)])
+xlabel('\itt\rm(s)')
+ylabel('\delta\rho(m)')
+title('可见卫星伪距误差')
+
+figure
+hold on
+labels = {};
+for k=1:32
+    if ~isnan(max(ele(:,k)))
+        plot(t,ele(:,k), 'LineWidth',1.2)
+        labels = [labels, ['SV',num2str(k)]];
+    end
+end
+legend(labels)
+set(gca, 'xlim', [t(1),t(end)])
+xlabel('\itt\rm(s)')
+ylabel('\beta(\circ)')
+title('可见卫星高度角')
+
+figure
+hold on
+labels = {};
+for k=1:32
+    if ~isnan(max(drange_rate(:,k)))
+        plot(t,drange_rate(:,k), 'LineWidth',1.2)
+        labels = [labels, ['SV',num2str(k)]];
+    end
+end
+legend(labels)
+set(gca, 'xlim', [t(1),t(end)])
+xlabel('\itt\rm(s)')
+ylabel('\delta\itd\rm\rho(m/s)')
+title('可见卫星伪距率误差')

@@ -1,11 +1,11 @@
 % Parse imu data.
 
 % filename = './imu_data/ReceivedTofile-COM3-2018_9_1_17-01-41.DAT';
-% filename = './imu_data/ReceivedTofile-COM3-2018_9_8_20-13-19.DAT';
+filename = './imu_data/ReceivedTofile-COM3-2018_9_8_20-13-19.DAT';
 
 % filename = './imu_data/ReceivedTofile-COM6-2018_9_19_20-50-29.DAT';
 % filename = './imu_data/ReceivedTofile-COM6-2018_9_19_21-07-40.DAT';
-filename = './imu_data/ReceivedTofile-COM6-2018_9_19_21-22-48.DAT';
+% filename = './imu_data/ReceivedTofile-COM6-2018_9_19_21-22-48.DAT';
 
 fileID = fopen(filename, 'r');
 stream = fread(fileID, 'uint8=>uint8');
